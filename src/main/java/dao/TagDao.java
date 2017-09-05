@@ -20,21 +20,8 @@ public class TagDao {
         this.dsl = DSL.using(jooqConfig);
     }
 
-    public int insert(String merchantName, BigDecimal amount) {
-        ReceiptsRecord receiptsRecord = dsl
-                .insertInto(RECEIPTS, RECEIPTS.MERCHANT, RECEIPTS.AMOUNT)
-                .values(merchantName, amount)
-                .returning(RECEIPTS.ID)
-                .fetchOne();
-
-        checkState(receiptsRecord != null && receiptsRecord.getId() != null, "Insert failed");
-
-        return receiptsRecord.getId();
-    }
-
-    public List<ReceiptsRecord> getAllReceipts(String tag) {
-        return   dsl.selectFrom(RECEIPTS).where(RECEIPTS.ID.in(dsl.select(TAGS.ID).from(TAGS).where(TAGS.TAG.eq(tag)).fetch())).fetch();
-        //return dsl.selectFrom(RECEIPTS).fetch();
+    public List<ReceiptsRecord> getAllReceiptsFromTag(String tag) {
+        return dsl.selectFrom(RECEIPTS).where(RECEIPTS.ID.in(dsl.select(TAGS.ID).from(TAGS).where(TAGS.TAG.eq(tag)).fetch())).fetch();
     }
 
 
