@@ -43,7 +43,6 @@ public class TagDao {
             if (dsl.selectFrom(TAGS).where(TAGS.ID.eq(id).and(TAGS.TAG.eq(tag))).fetchOne() == null) {
                 // insert
                 dsl.insertInto(TAGS).values(id, tag).execute();
-
             }
             else {
                 // delete
