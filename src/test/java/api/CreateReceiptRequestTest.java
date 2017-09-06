@@ -41,4 +41,15 @@ public class CreateReceiptRequestTest {
         validator.validate(receipt);
         assertThat(validator.validate(receipt), hasSize(1));
     }
+
+    // user defined tests
+    @Test
+    public void testCreateRequest() {
+        CreateReceiptRequest receipt = new CreateReceiptRequest();
+        receipt.merchant = "Apple";
+        receipt.amount = new BigDecimal(2736.03);
+
+        validator.validate(receipt);
+        assertThat(validator.validate(receipt), empty());
+    }
 }
