@@ -121,10 +121,18 @@
 
             .add-tag {
                 width: 56px;
+                height: 19px;
+                vertical-align: bottom;
+                margin-left: 2px;
+                background-color: royalblue;
+                border: solid black 1px;
+                border-radius: 5px;
+                color: white;
             }
 
             .tag_input {
                 width: 50px;
+                vertical-align: bottom;
                 margin-left: 2px;
                 text-align: center;
             }
@@ -136,6 +144,7 @@
             .tags span {
                 display: inline-block;
                 width: 54px;
+                vertical-align: bottom;
                 margin-left: 2px;
                 background-color: lightyellow;
                 border: solid black 1px;
@@ -151,9 +160,7 @@
 
             // This is the idiomatic way to ensure that JQuery does not
             // execute until the page has loaded
-            $(
-                refresh()
-            );
+            $(refresh());
 
             function refresh() {
                 $('.receipt').remove();
@@ -185,6 +192,7 @@
             function addTagClick(id) {
                 console.log('add button clicked, id = ' + id);
                 $('#tagid' + id).after('<input class="tag_input" type="text" placeholder="tag">');
+                $('#tagid' + id).remove();
                 $('.tag_input').keypress(function (event) {
                     var tag = $(this).val();
                     if (tag != '' && event.keyCode == 13) {
