@@ -1,11 +1,153 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <link rel='stylesheet' href='style.css' />
-        <script data-require='jquery@*' data-semver='3.1.1' src='https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js'></script>
+        <style>
+            body {
+                font-family: Helvetica, 'DejaVu Sans', Arial, sans-serif;
+            }
+
+            #bodyContainer {
+                width: 600px;
+            }
+
+            #add-receipt {
+                float: right;
+                margin-top: -55px;
+                width: 60px;
+
+                background-color: orange;
+                border: 1px solid black;
+                border-radius: 10px;
+
+                text-align: center;
+                font-size: 30px;
+                font-weight: bold;
+                color: white;
+            }
+
+            #addReceiptContainer {
+                display: none;
+                background-color: orange;
+                border: 1px solid black;
+                border-radius: 10px;
+                padding: 10px 15px 10px 10px;
+            }
+
+            #addReceiptContainer input {
+                height: 25px;
+                width: 100%;
+                font-size: 20px;
+                font-style: italic;
+                font-weight: bold;
+            }
+
+            #cancelSaveContainer {
+                margin-top: 15px;
+                text-align: right;
+            }
+
+            #cancelSaveContainer div{
+                display: inline-block;
+                margin-left: 10px;
+
+                border: 1px solid black;
+                border-radius: 10px;
+
+                text-align: center;
+                padding: 5px;
+                font-size: 20px;
+                font-weight: bold;
+                color: white;
+            }
+
+            #cancel-receipt {
+                background-color: red;
+            }
+
+            #save-receipt {
+                background-color: green;
+            }
+
+            #receiptList {
+                border: solid black 1px;
+                border-radius: 10px;
+                margin-top: 20px;
+                background-color: lightcyan;
+            }
+
+            #header {
+                text-align: center;
+            }
+
+            .receipt {
+                text-align: center;
+            }
+
+            #idHeader, .id, #timeHeader, .time, #merchantHeader, .merchant, #amountHeader, .amount, #tagsHeader, .tags {
+                display: inline-block;
+                padding-top: 5px;
+                padding-bottom: 5px;
+                font-size: 15px;
+            }
+
+            #idHeader, .id, #timeHeader, .time, #merchantHeader, .merchant, #amountHeader, .amount, #tagsHeader {
+                font-weight: bold;
+            }
+
+            #header span {
+                font-size: 20px;
+            }
+
+            #idHeader, .id {
+                width: 5%;
+            }
+
+            #timeHeader, .time {
+                width: 15%;
+            }
+
+            #merchantHeader, .merchant {
+                width: 20%;
+            }
+
+            #amountHeader, .amount {
+                width: 10%;
+            }
+
+            #tagsHeader, .tags {
+                width: 50%;
+                text-align: left;
+            }
+
+            .add-tag {
+                width: 56px;
+            }
+
+            .tag_input {
+                width: 50px;
+                margin-left: 2px;
+                text-align: center;
+            }
+
+            input {
+                border-radius: 5px;
+            }
+
+            .tags span {
+                display: inline-block;
+                width: 54px;
+                margin-left: 2px;
+                background-color: lightyellow;
+                border: solid black 1px;
+                border-radius: 5px;
+                text-align: center;
+            }
+        </style>
+
+        <script data-require="jquery@*" data-semver="3.1.1" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 
         <script>
-            const api = 'http://localhost:8080'; // <- do not need a root api URL if this page is served directly by the API
+            const api = ''; // <- do not need a root api URL if this page is served directly by the API
 
             // This is the idiomatic way to ensure that JQuery does not
             // execute until the page has loaded
@@ -23,7 +165,7 @@
                             var tagsHTML = '';
                             for (var j = 0; j < alltags.length; j++) {
                                 if (alltags[j].id == receipt.id) {
-                                    tagsHTML += '<span class="tag" onclick="tagClick(' + receipt.id + ',\'' + alltags[j].tag + '\')">' + alltags[j].tag + '</span>';
+                                    tagsHTML += '<span class="tagValue" onclick="tagClick(' + receipt.id + ',\'' + alltags[j].tag + '\')">' + alltags[j].tag + '</span>';
                                 }
                             }
                             $(
@@ -136,13 +278,9 @@
         </script>
     </head>
     <body>
-        <DIV id="bodyContainer">
-            <h1>
-                My Receipts
-            </h1>
-            <div id="add-receipt" onclick="addReceiptClick()">
-                +
-            </div>
+        <div id="bodyContainer">
+            <h1>My Receipts</h1>
+            <div id="add-receipt" onclick="addReceiptClick()">+</div>
             <div id="addReceiptContainer">
                 <input id="merchant" type="text" placeholder="Merchant">
                 <input id="amount" type="number" placeholder="Amount">
@@ -151,10 +289,9 @@
                     <div id="save-receipt" onclick="saveReceipt()">Save</div>
                 </div>
             </div>
-
             <div id="receiptList">
                 <div id="header"><span id="idHeader">#</span><span id="timeHeader">Time</span><span id="merchantHeader">Merchant</span><span id="amountHeader">$</span><span id="tagsHeader">Tags</span></div>
             </div>
-        </DIV>
+        </div>
     </body>
 </html>
