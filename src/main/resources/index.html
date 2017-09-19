@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel='stylesheet' href='style.css' />
+        <script data-require='jquery@*' data-semver='3.1.1' src='https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js'></script>
+
+        <script>
+            const api = 'http://localhost:8080'; // <- do not need a root api URL if this page is served directly by the API
+
+            // This is the idiomatic way to ensure that JQuery does not
+            // execute until the page has loaded
+            $(
+                refresh()
+            );
+
+            function refresh() {
+                $('.receipt').remove();
+
+                $.getJSON(api + '/receipts', function (receipts) {
+                    $.getJSON(api + '/alltags', function (alltags) {
+                        for (var i = 0; i < receipts.length; i++) {
+                            var receipt = receipts[i];
+                            var tagsHTML = '';
+                            for (var j = 0; j < alltags.length; j++) {
+                                if (alltags[j].id == receipt.id) {
+                                    tagsHTML += '<span class="tag" onclick="tagClick(' + receipt.id + ',\'' + alltags[j].tag + '\')">' + alltags[j].tag + '</span>';
+                                }
+                            }
+                            $(
+                                '<div class="receipt">' +
+                                    '<span class="id">' + receipt.id + '</span>' +
+                                    '<span class="time">' + receipt.time + '</span>' +
+                                    '<span class="merchant">' + receipt.merchant + '</span>' +
+                                    '<span class="amount">' + receipt.amount + '</span>' +
+                                    '<span class="tags"><button id="tagid' + receipt.id + '" class="add-tag" onclick="addTagClick(' + receipt.id + ')">Add +</button>' + tagsHTML + '</span>' +
+                                '</div>'
+                            ).appendTo($('#receiptList'));
+                        }
+                    });
+                });
+            }
+
+            function addTagClick(id) {
+                console.log('add button clicked, id = ' + id);
+                $('#tagid' + id).after('<input class="tag_input" type="text" placeholder="tag">');
+                $('.tag_input').keypress(function (event) {
+                    var tag = $(this).val();
+                    if (tag != '' && event.keyCode == 13) {
+                        console.log('enter key pressed, id = ' + id + ' tag = ' + tag);
+                        $.ajax({
+                            url: api + '/tags/' + tag,
+                            dataType: 'json',
+                            type: 'PUT',
+                            contentType: 'application/json',
+                            data: JSON.stringify(id),
+                            success: function () {
+                                refresh();
+                                $(this).remove();
+                            },
+                            error: function (error) {
+                                alert(error);
+                                console.log(error);
+                            }
+                        });
+                    }
+                });
+            }
+
+            function tagClick(id, tag) {
+                console.log('mouse clicked, id = '+ id + ' tag = ' + tag);
+                $.ajax({
+                    url: api + '/tags/' + tag,
+                    dataType: 'json',
+                    type: 'PUT',
+                    contentType: 'application/json',
+                    data: JSON.stringify(id),
+                    success: function () {
+                        refresh();
+                        $(this).remove();
+                    },
+                    error: function (error) {
+                        alert(error);
+                        console.log(error);
+                    }
+                });
+            }
+
+            function addReceiptClick () {
+                if ($('#addReceiptContainer').css('display') == 'none')
+                    $('#addReceiptContainer').show();
+                else
+                    closeAddReceiptContainer();
+            }
+
+            function cancelReceipt () {
+                closeAddReceiptContainer();
+            }
+
+            function closeAddReceiptContainer() {
+                $('#merchant').val('');
+                $('#amount').val('');
+                $('#addReceiptContainer').hide();
+            }
+
+            function saveReceipt () {
+                var data = {
+                    merchant: $('#merchant').val(),
+                    amount:   $('#amount').val()
+                };
+
+                if (data.merchant == '') {
+                    alert('Merchant Name Missing');
+                    return;
+                }
+
+                console.log(data);
+
+                $.ajax({
+                    url: api + '/receipts',
+                    dataType: 'json',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(data),
+                    success: function () {
+                        refresh();
+                        $('#merchant').val('');
+                        $('#amount').val('');
+                        $('#addReceiptContainer').hide();
+                    },
+                    error: function (error) {
+                        alert(error);
+                        console.log(error);
+                    }
+                });
+            }
+        </script>
+    </head>
+    <body>
+        <DIV id="bodyContainer">
+            <h1>
+                My Receipts
+            </h1>
+            <div id="add-receipt" onclick="addReceiptClick()">
+                +
+            </div>
+            <div id="addReceiptContainer">
+                <input id="merchant" type="text" placeholder="Merchant">
+                <input id="amount" type="number" placeholder="Amount">
+                <div id="cancelSaveContainer">
+                    <div id="cancel-receipt" onclick="cancelReceipt()">Cancel</div>
+                    <div id="save-receipt" onclick="saveReceipt()">Save</div>
+                </div>
+            </div>
+
+            <div id="receiptList">
+                <div id="header"><span id="idHeader">#</span><span id="timeHeader">Time</span><span id="merchantHeader">Merchant</span><span id="amountHeader">$</span><span id="tagsHeader">Tags</span></div>
+            </div>
+        </DIV>
+    </body>
+</html>

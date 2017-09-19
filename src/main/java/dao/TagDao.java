@@ -1,6 +1,7 @@
 package dao;
 
 import generated.tables.records.ReceiptsRecord;
+import generated.tables.records.TagsRecord;
 import org.jooq.Configuration;
 import org.jooq.DSLContext;
 import org.jooq.impl.DSL;
@@ -20,11 +21,6 @@ public class TagDao {
         this.dsl = DSL.using(jooqConfig);
     }
 
-    public List<ReceiptsRecord> getAllReceiptsFromTag(String tag) {
-        return dsl.selectFrom(RECEIPTS).where(RECEIPTS.ID.in(dsl.select(TAGS.ID).from(TAGS).where(TAGS.TAG.eq(tag)).fetch())).fetch();
-    }
-
-
     public void toggle(String tag, int id) {
         if (dsl.selectFrom(RECEIPTS).where(RECEIPTS.ID.eq(id)).fetchOne() != null) {
             if (dsl.selectFrom(TAGS).where(TAGS.ID.eq(id).and(TAGS.TAG.eq(tag))).fetchOne() == null) {
@@ -33,8 +29,16 @@ public class TagDao {
             }
             else {
                 // delete
-                dsl.deleteFrom(TAGS).where(TAGS.ID.eq(id).and(TAGS.TAG.eq(tag)));
+                dsl.deleteFrom(TAGS).where(TAGS.ID.eq(id).and(TAGS.TAG.eq(tag))).execute();
             }
         }
+    }
+
+    public List<ReceiptsRecord> getAllReceiptsFromTag(String tag) {
+        return dsl.selectFrom(RECEIPTS).where(RECEIPTS.ID.in(dsl.select(TAGS.ID).from(TAGS).where(TAGS.TAG.eq(tag)).fetch())).fetch();
+    }
+
+    public List<TagsRecord> getAllTags() {
+        return dsl.selectFrom(TAGS).fetch();
     }
 }

@@ -1,7 +1,7 @@
 package api;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import generated.tables.records.ReceiptsRecord;
+import generated.tables.records.TagsRecord;
 
 import java.math.BigDecimal;
 import java.sql.Time;
@@ -15,23 +15,15 @@ import java.sql.Time;
  * Any properties that you want exposed when this class is translated to JSON must be
  * annotated with {@link JsonProperty}
  */
-public class ReceiptResponse {
+public class TagResponse {
     @JsonProperty
     Integer id;
 
     @JsonProperty
-    Time time;
+    String tag;
 
-    @JsonProperty
-    String merchant;
-
-    @JsonProperty
-    BigDecimal amount;
-
-    public ReceiptResponse(ReceiptsRecord dbRecord) {
+    public TagResponse(TagsRecord dbRecord) {
         this.id = dbRecord.getId();
-        this.time = dbRecord.getTime();
-        this.merchant = dbRecord.getMerchant();
-        this.amount = dbRecord.getAmount();
+        this.tag = dbRecord.getTag();
     }
 }

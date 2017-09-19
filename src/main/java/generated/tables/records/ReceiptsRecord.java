@@ -31,7 +31,7 @@ import org.jooq.impl.UpdatableRecordImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class ReceiptsRecord extends UpdatableRecordImpl<ReceiptsRecord> implements Record5<Integer, Time, String, BigDecimal, Integer> {
 
-	private static final long serialVersionUID = -1941296675;
+	private static final long serialVersionUID = -348144374;
 
 	/**
 	 * Setter for <code>public.receipts.id</code>.
@@ -48,16 +48,16 @@ public class ReceiptsRecord extends UpdatableRecordImpl<ReceiptsRecord> implemen
 	}
 
 	/**
-	 * Setter for <code>public.receipts.uploaded</code>.
+	 * Setter for <code>public.receipts.time</code>.
 	 */
-	public void setUploaded(Time value) {
+	public void setTime(Time value) {
 		setValue(1, value);
 	}
 
 	/**
-	 * Getter for <code>public.receipts.uploaded</code>.
+	 * Getter for <code>public.receipts.time</code>.
 	 */
-	public Time getUploaded() {
+	public Time getTime() {
 		return (Time) getValue(1);
 	}
 
@@ -148,7 +148,7 @@ public class ReceiptsRecord extends UpdatableRecordImpl<ReceiptsRecord> implemen
 	 */
 	@Override
 	public Field<Time> field2() {
-		return Receipts.RECEIPTS.UPLOADED;
+		return Receipts.RECEIPTS.TIME;
 	}
 
 	/**
@@ -188,7 +188,7 @@ public class ReceiptsRecord extends UpdatableRecordImpl<ReceiptsRecord> implemen
 	 */
 	@Override
 	public Time value2() {
-		return getUploaded();
+		return getTime();
 	}
 
 	/**
@@ -229,7 +229,7 @@ public class ReceiptsRecord extends UpdatableRecordImpl<ReceiptsRecord> implemen
 	 */
 	@Override
 	public ReceiptsRecord value2(Time value) {
-		setUploaded(value);
+		setTime(value);
 		return this;
 	}
 
@@ -287,11 +287,11 @@ public class ReceiptsRecord extends UpdatableRecordImpl<ReceiptsRecord> implemen
 	/**
 	 * Create a detached, initialised ReceiptsRecord
 	 */
-	public ReceiptsRecord(Integer id, Time uploaded, String merchant, BigDecimal amount, Integer receiptType) {
+	public ReceiptsRecord(Integer id, Time time, String merchant, BigDecimal amount, Integer receiptType) {
 		super(Receipts.RECEIPTS);
 
 		setValue(0, id);
-		setValue(1, uploaded);
+		setValue(1, time);
 		setValue(2, merchant);
 		setValue(3, amount);
 		setValue(4, receiptType);

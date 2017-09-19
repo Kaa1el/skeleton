@@ -2,8 +2,10 @@ package controllers;
 
 import api.CreateReceiptRequest;
 import api.ReceiptResponse;
+import api.TagResponse;
 import dao.TagDao;
 import generated.tables.records.ReceiptsRecord;
+import generated.tables.records.TagsRecord;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -27,13 +29,20 @@ public class TagController {
     @Path("/tags/{tag}")
     public void toggleTag(@PathParam("tag") String tagName, int id) {
         tags.toggle(tagName, id);
-        // <your code here
+        // TODO implement a response
     }
 
     @GET
     @Path("/tags/{tag}")
     public List<ReceiptResponse> getReceiptsFromTag(@PathParam("tag") String tagName) {
-        List<ReceiptsRecord> receiptRecords = tags.getAllReceiptsFromTag(tagName);
-        return receiptRecords.stream().map(ReceiptResponse::new).collect(toList());
+        List<ReceiptsRecord> receiptsRecords = tags.getAllReceiptsFromTag(tagName);
+        return receiptsRecords.stream().map(ReceiptResponse::new).collect(toList());
+    }
+
+    @GET
+    @Path("/alltags")
+    public List<TagResponse> getTagsFromId() {
+        List<TagsRecord> tagsRecords = tags.getAllTags();
+        return tagsRecords.stream().map(TagResponse::new).collect(toList());
     }
 }
