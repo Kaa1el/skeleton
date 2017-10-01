@@ -1,305 +1,438 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <style>
-            body {
-                font-family: Helvetica, 'DejaVu Sans', Arial, sans-serif;
-            }
+<head>
+    <style>
+        body {
+            font-family: Helvetica, 'DejaVu Sans', Arial, sans-serif;
+        }
 
-            #bodyContainer {
-                width: 600px;
-            }
+        #bodyContainer {
+            width: 600px;
+        }
 
-            #add-receipt {
-                float: right;
-                margin-top: -55px;
-                width: 60px;
+        #twoButtons {
+            float: right;
+        }
 
-                background-color: orange;
-                border: 1px solid black;
-                border-radius: 10px;
+        #add-receipt {
+            float: left;
+            margin-top: -55px;
+            width: 60px;
 
-                text-align: center;
-                font-size: 30px;
-                font-weight: bold;
-                color: white;
-            }
+            background-color: orange;
+            border: 1px solid black;
+            border-radius: 10px;
 
-            #addReceiptContainer {
-                display: none;
-                background-color: orange;
-                border: 1px solid black;
-                border-radius: 10px;
-                padding: 10px 15px 10px 10px;
-            }
+            text-align: center;
+            font-size: 30px;
+            font-weight: bold;
+            color: white;
+        }
 
-            #addReceiptContainer input {
-                height: 25px;
-                width: 100%;
-                font-size: 20px;
-                font-style: italic;
-                font-weight: bold;
-            }
+        #takeSnapshot {
+            float: right;
+            margin-left: 15px;
+            margin-top: -55px;
+            width: 60px;
 
-            #cancelSaveContainer {
-                margin-top: 15px;
-                text-align: right;
-            }
+            background-color: orange;
+            border: 1px solid black;
+            border-radius: 10px;
 
-            #cancelSaveContainer div{
-                display: inline-block;
-                margin-left: 10px;
+            text-align: center;
+            font-size: 30px;
+            font-weight: bold;
+            color: white;
+        }
 
-                border: 1px solid black;
-                border-radius: 10px;
+        #addReceiptContainer, #takeSnapshotContainer {
+            background-color: orange;
+            border: 1px solid black;
+            border-radius: 10px;
+            padding: 10px 15px 10px 10px;
+        }
 
-                text-align: center;
-                padding: 5px;
-                font-size: 20px;
-                font-weight: bold;
-                color: white;
-            }
+        #addReceiptContainer input {
+            height: 25px;
+            width: 100%;
+            font-size: 20px;
+            font-style: italic;
+            font-weight: bold;
+        }
 
-            #cancel-receipt {
-                background-color: red;
-            }
+        .buttonsContainer {
+            margin-top: 10px;
+            text-align: right;
+        }
 
-            #save-receipt {
-                background-color: green;
-            }
+        .buttonsContainer button {
+            display: inline-block;
+            margin-left: 10px;
 
-            #receiptList {
-                border: solid black 1px;
-                border-radius: 10px;
-                margin-top: 20px;
-                background-color: lightcyan;
-            }
+            border: 1px solid black;
+            border-radius: 10px;
 
-            #header {
-                text-align: center;
-            }
+            text-align: center;
+            padding: 5px;
+            font-size: 20px;
+            font-weight: bold;
+            color: white;
+        }
 
-            .receipt {
-                text-align: center;
-            }
+        #cancel-receipt, #take-pic-cancel {
+            background-color: red;
+        }
 
-            #idHeader, .id, #timeHeader, .time, #merchantHeader, .merchant, #amountHeader, .amount, #tagsHeader, .tags {
-                display: inline-block;
-                padding-top: 5px;
-                padding-bottom: 5px;
-                font-size: 15px;
-            }
+        #save-receipt {
+            background-color: green;
+        }
 
-            #idHeader, .id, #timeHeader, .time, #merchantHeader, .merchant, #amountHeader, .amount, #tagsHeader {
-                font-weight: bold;
-            }
+        #start-camera {
+            background-color: green;
+        }
 
-            #header span {
-                font-size: 20px;
-            }
+        #take-pic {
+            background-color: blue;
+        }
 
-            #idHeader, .id {
-                width: 5%;
-            }
+        #receiptList {
+            border: solid black 1px;
+            border-radius: 10px;
+            margin-top: 20px;
+            background-color: lightcyan;
+        }
 
-            #timeHeader, .time {
-                width: 15%;
-            }
+        #header {
+            text-align: center;
+        }
 
-            #merchantHeader, .merchant {
-                width: 20%;
-            }
+        .receipt {
+            text-align: center;
+        }
 
-            #amountHeader, .amount {
-                width: 10%;
-            }
+        #idHeader, .id, #timeHeader, .time, #merchantHeader, .merchant, #amountHeader, .amount, #tagsHeader, .tags {
+            display: inline-block;
+            padding-top: 5px;
+            padding-bottom: 5px;
+            font-size: 15px;
+        }
 
-            #tagsHeader, .tags {
-                width: 50%;
-                text-align: left;
-            }
+        #idHeader, .id, #timeHeader, .time, #merchantHeader, .merchant, #amountHeader, .amount, #tagsHeader {
+            font-weight: bold;
+        }
 
-            .add-tag {
-                width: 56px;
-                height: 19px;
-                vertical-align: bottom;
-                margin-left: 2px;
-                background-color: royalblue;
-                border: solid black 1px;
-                border-radius: 5px;
-                color: white;
-            }
+        #header span {
+            font-size: 20px;
+        }
 
-            .tag_input {
-                width: 50px;
-                vertical-align: bottom;
-                margin-left: 2px;
-                text-align: center;
-            }
+        #idHeader, .id {
+            width: 5%;
+        }
 
-            input {
-                border-radius: 5px;
-            }
+        #timeHeader, .time {
+            width: 15%;
+        }
 
-            .tags span {
-                display: inline-block;
-                width: 54px;
-                vertical-align: bottom;
-                margin-left: 2px;
-                background-color: lightyellow;
-                border: solid black 1px;
-                border-radius: 5px;
-                text-align: center;
-            }
-        </style>
+        #merchantHeader, .merchant {
+            width: 20%;
+        }
 
-        <script data-require="jquery@*" data-semver="3.1.1" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        #amountHeader, .amount {
+            width: 10%;
+        }
 
-        <script>
-            const api = ''; // <- do not need a root api URL if this page is served directly by the API
+        #tagsHeader, .tags {
+            width: 50%;
+            text-align: left;
+        }
 
-            // This is the idiomatic way to ensure that JQuery does not
-            // execute until the page has loaded
-            $(refresh());
+        .add-tag {
+            width: 56px;
+            height: 19px;
+            vertical-align: bottom;
+            margin-left: 2px;
+            background-color: royalblue;
+            border: solid black 1px;
+            border-radius: 5px;
+            color: white;
+        }
 
-            function refresh() {
-                $('.receipt').remove();
+        .tag_input {
+            width: 50px;
+            vertical-align: bottom;
+            margin-left: 2px;
+            text-align: center;
+        }
 
-                $.getJSON(api + '/receipts', function (receipts) {
-                    $.getJSON(api + '/alltags', function (alltags) {
-                        for (var i = 0; i < receipts.length; i++) {
-                            var receipt = receipts[i];
-                            var tagsHTML = '';
-                            for (var j = 0; j < alltags.length; j++) {
-                                if (alltags[j].id == receipt.id) {
-                                    tagsHTML += '<span class="tagValue" onclick="tagClick(' + receipt.id + ',\'' + alltags[j].tag + '\')">' + alltags[j].tag + '</span>';
-                                }
+        input {
+            border-radius: 5px;
+        }
+
+        .tags span {
+            display: inline-block;
+            width: 54px;
+            vertical-align: bottom;
+            margin-left: 2px;
+            background-color: lightyellow;
+            border: solid black 1px;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        video {
+            background: white;
+            border: 1px solid black;
+            width: 100%;
+        }
+
+        #vidwrap {
+
+        }
+    </style>
+
+    <script data-require="jquery@*" data-semver="3.1.1" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+    <script>
+        const api = ''; // <- do not need a root api URL if this page is served directly by the API
+
+        // This is the idiomatic way to ensure that JQuery does not
+        // execute until the page has loaded
+        $(refresh());
+
+        function refresh() {
+            $('.receipt').remove();
+
+            $.getJSON(api + '/receipts', function (receipts) {
+                $.getJSON(api + '/tags', function (tags) {
+                    for (var i = 0; i < receipts.length; i++) {
+                        var receipt = receipts[i];
+                        var tagsHTML = '';
+                        for (var j = 0; j < tags.length; j++) {
+                            var tag = tags[j];
+                            if (tag.id == receipt.id) {
+                                tagsHTML += '<span class="tagValue" onclick="tagClick(' + receipt.id + ',\'' + tag.tag + '\')">' + tag.tag + '</span>';
                             }
-                            $(
-                                '<div class="receipt">' +
-                                    '<span class="id">' + receipt.id + '</span>' +
-                                    '<span class="time">' + receipt.time + '</span>' +
-                                    '<span class="merchant">' + receipt.merchant + '</span>' +
-                                    '<span class="amount">' + receipt.amount + '</span>' +
-                                    '<span class="tags"><button id="tagid' + receipt.id + '" class="add-tag" onclick="addTagClick(' + receipt.id + ')">Add +</button>' + tagsHTML + '</span>' +
-                                '</div>'
-                            ).appendTo($('#receiptList'));
+                        }
+                        $(
+                            '<div class="receipt">' +
+                            '<span class="id">' + receipt.id + '</span>' +
+                            '<span class="time">' + receipt.time + '</span>' +
+                            '<span class="merchant">' + receipt.merchant + '</span>' +
+                            '<span class="amount">' + receipt.amount + '</span>' +
+                            '<span class="tags"><button id="tagid' + receipt.id + '" class="add-tag" onclick="addTagClick(' + receipt.id + ')">Add +</button>' + tagsHTML + '</span>' +
+                            '</div>'
+                        ).appendTo($('#receiptList'));
+                    }
+                });
+            });
+        }
+
+        function addTagClick(id) {
+            console.log('add button clicked, id = ' + id);
+            $('#tagid' + id).after('<input class="tag_input" type="text" placeholder="tag">');
+            $('#tagid' + id).remove();
+            $('.tag_input').keypress(function (event) {
+                var tag = $(this).val();
+                if (tag != '' && event.keyCode == 13) {
+                    console.log('enter key pressed, id = ' + id + ' tag = ' + tag);
+                    $.ajax({
+                        url: api + '/tags/' + tag,
+                        dataType: 'json',
+                        type: 'PUT',
+                        contentType: 'application/json',
+                        data: JSON.stringify(id),
+                        success: function () {
+                            refresh();
+                            $(this).remove();
+                        },
+                        error: function (error) {
+                            alert(error);
+                            console.log(error);
                         }
                     });
-                });
-            }
-
-            function addTagClick(id) {
-                console.log('add button clicked, id = ' + id);
-                $('#tagid' + id).after('<input class="tag_input" type="text" placeholder="tag">');
-                $('#tagid' + id).remove();
-                $('.tag_input').keypress(function (event) {
-                    var tag = $(this).val();
-                    if (tag != '' && event.keyCode == 13) {
-                        console.log('enter key pressed, id = ' + id + ' tag = ' + tag);
-                        $.ajax({
-                            url: api + '/tags/' + tag,
-                            dataType: 'json',
-                            type: 'PUT',
-                            contentType: 'application/json',
-                            data: JSON.stringify(id),
-                            success: function () {
-                                refresh();
-                                $(this).remove();
-                            },
-                            error: function (error) {
-                                alert(error);
-                                console.log(error);
-                            }
-                        });
-                    }
-                });
-            }
-
-            function tagClick(id, tag) {
-                console.log('mouse clicked, id = '+ id + ' tag = ' + tag);
-                $.ajax({
-                    url: api + '/tags/' + tag,
-                    dataType: 'json',
-                    type: 'PUT',
-                    contentType: 'application/json',
-                    data: JSON.stringify(id),
-                    success: function () {
-                        refresh();
-                        $(this).remove();
-                    },
-                    error: function (error) {
-                        alert(error);
-                        console.log(error);
-                    }
-                });
-            }
-
-            function addReceiptClick () {
-                if ($('#addReceiptContainer').css('display') == 'none')
-                    $('#addReceiptContainer').show();
-                else
-                    closeAddReceiptContainer();
-            }
-
-            function cancelReceipt () {
-                closeAddReceiptContainer();
-            }
-
-            function closeAddReceiptContainer() {
-                $('#merchant').val('');
-                $('#amount').val('');
-                $('#addReceiptContainer').hide();
-            }
-
-            function saveReceipt () {
-                var data = {
-                    merchant: $('#merchant').val(),
-                    amount:   $('#amount').val()
-                };
-
-                if (data.merchant == '') {
-                    alert('Merchant Name Missing');
-                    return;
                 }
+            });
+        }
 
-                console.log(data);
+        function tagClick(id, tag) {
+            console.log('mouse clicked, id = '+ id + ' tag = ' + tag);
+            $.ajax({
+                url: api + '/tags/' + tag,
+                dataType: 'json',
+                type: 'PUT',
+                contentType: 'application/json',
+                data: JSON.stringify(id),
+                success: function () {
+                    refresh();
+                    $(this).remove();
+                },
+                error: function (error) {
+                    alert(error);
+                    console.log(error);
+                }
+            });
+        }
+
+        function addReceiptClick () {
+            cancelSnapshot();
+            if ($('#addReceiptContainer').css('display') == 'none') {
+                $('#addReceiptContainer').show();
+            }
+            else {
+                cancelReceipt();
+            }
+        }
+
+        function cancelReceipt () {
+            $('#merchant').val('');
+            $('#amount').val('');
+            $('#addReceiptContainer').hide();
+        }
+
+        function saveReceipt () {
+            var data = {
+                merchant: $('#merchant').val(),
+                amount:   $('#amount').val()
+            };
+
+            if (data.merchant == '') {
+                alert('Merchant Name Missing');
+                return;
+            }
+
+            console.log(data);
+
+            $.ajax({
+                url: api + '/receipts',
+                dataType: 'json',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(data),
+                success: function () {
+                    refresh();
+                    $('#merchant').val('');
+                    $('#amount').val('');
+                    $('#addReceiptContainer').hide();
+                },
+                error: function (error) {
+                    alert(error);
+                    console.log(error);
+                }
+            });
+        }
+
+        var stream;
+        var isvideoon = false;
+
+        let imageCapture;
+        let track;
+
+
+        function attachMediaStream(mediaStream) {
+            $('video')[0].srcObject = mediaStream;
+            stream = mediaStream;
+            // Saving the track allows us to capture a photo
+            track = mediaStream.getVideoTracks()[0];
+            imageCapture = new ImageCapture(track);
+        }
+
+        function startVideo() {
+            isvideoon = true;
+            navigator.mediaDevices.getUserMedia({video: {facingMode: {exact: "environment"}}})
+            .then(attachMediaStream)
+            .catch(error => {
+                navigator.mediaDevices.getUserMedia({video: true})
+                .then(attachMediaStream)
+                .catch(error => {
+                    isvideoon = false;
+                    console.log('you are fooked');
+                })
+            });
+        }
+
+        function endVideo() {
+            if (isvideoon) {
+                stream.getVideoTracks()[0].stop();
+            }
+        }
+
+        function takeSnapshot() {
+            // create a CANVAS element that is same size as the image
+            imageCapture.grabFrame().then(img => {
+                const canvas = document.createElement('canvas');
+                canvas.width = img.width;
+                canvas.height = img.height;
+
+                canvas.getContext('2d').drawImage(img, 0, 0);
+                const base64EncodedImageData = canvas.toDataURL('image/png').split(',')[1];
 
                 $.ajax({
-                    url: api + '/receipts',
-                    dataType: 'json',
-                    type: 'POST',
-                    contentType: 'application/json',
-                    data: JSON.stringify(data),
-                    success: function () {
-                        refresh();
-                        $('#merchant').val('');
-                        $('#amount').val('');
-                        $('#addReceiptContainer').hide();
-                    },
-                    error: function (error) {
-                        alert(error);
-                        console.log(error);
-                    }
-                });
+                    url: "/images",
+                    type: "POST",
+                    data: base64EncodedImageData,
+                    contentType: "text/plain",
+                    success: function() {},
+                }).then(response => {
+                    cancelSnapshot();
+                    addReceiptClick();
+                    $('#merchant').val(response.merchant);
+                    $('#amount').val(response.amount);
+                }).always(() => console.log('request complete'));
+
+                // For debugging, you can uncomment this to see the frame that was captured
+                // $('BODY').append(canvas);
+            });
+        }
+
+
+        $(function () {
+            $('#start-camera').on('click', startVideo);
+            $('video').on('play', () => $('#take-pic').prop('disabled', false));
+            $('#take-pic').on('click', takeSnapshot);
+        });
+
+        function takeSnapshotClick() {
+            cancelReceipt();
+            if ($('#takeSnapshotContainer').css('display') == 'none') {
+                $('#takeSnapshotContainer').show();
             }
-        </script>
-    </head>
-    <body>
-        <div id="bodyContainer">
-            <h1>My Receipts</h1>
+            else {
+                cancelSnapshot();
+            }
+        }
+
+        function cancelSnapshot() {
+            endVideo();
+            $('#takeSnapshotContainer').hide();
+        }
+    </script>
+</head>
+<body>
+    <div id="bodyContainer">
+        <h1>My Receipts</h1>
+        <div id="twoButtons">
             <div id="add-receipt" onclick="addReceiptClick()">+</div>
-            <div id="addReceiptContainer">
-                <input id="merchant" type="text" placeholder="Merchant">
-                <input id="amount" type="number" placeholder="Amount">
-                <div id="cancelSaveContainer">
-                    <div id="cancel-receipt" onclick="cancelReceipt()">Cancel</div>
-                    <div id="save-receipt" onclick="saveReceipt()">Save</div>
-                </div>
-            </div>
-            <div id="receiptList">
-                <div id="header"><span id="idHeader">#</span><span id="timeHeader">Time</span><span id="merchantHeader">Merchant</span><span id="amountHeader">$</span><span id="tagsHeader">Tags</span></div>
+            <div id="takeSnapshot" onclick="takeSnapshotClick()">s</div>
+        </div>
+        <div id="addReceiptContainer" style="display: none">
+            <input id="merchant" type="text" placeholder="Merchant">
+            <input id="amount" type="number" placeholder="Amount">
+            <div class="buttonsContainer">
+                <button id="cancel-receipt" onclick="cancelReceipt()">Cancel</button>
+                <button id="save-receipt" onclick="saveReceipt()">Save</button>
             </div>
         </div>
-    </body>
+        <div id="takeSnapshotContainer" style="display: none">
+            <div id="vidwrap"><video autoplay></video></div>
+            <div class="buttonsContainer">
+                <button id="take-pic-cancel" onclick="cancelSnapshot()">Cancel</button>
+                <button id="start-camera">Camera</button>
+                <button id="take-pic" disabled="true">Snap</button>
+            </div>
+        </div>
+        <div id="receiptList">
+            <div id="header"><span id="idHeader">#</span><span id="timeHeader">Time</span><span id="merchantHeader">Merchant</span><span id="amountHeader">$</span><span id="tagsHeader">Tags</span></div>
+        </div>
+    </div>
+</body>
 </html>

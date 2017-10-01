@@ -34,11 +34,11 @@ public class TagDao {
         }
     }
 
-    public List<ReceiptsRecord> getAllReceiptsFromTag(String tag) {
-        return dsl.selectFrom(RECEIPTS).where(RECEIPTS.ID.in(dsl.select(TAGS.ID).from(TAGS).where(TAGS.TAG.eq(tag)).fetch())).fetch();
+    public List<TagsRecord> getTags() {
+        return dsl.selectFrom(TAGS).fetch();
     }
 
-    public List<TagsRecord> getAllTags() {
-        return dsl.selectFrom(TAGS).fetch();
+    public List<ReceiptsRecord> getReceiptsFromTag(String tag) {
+        return dsl.selectFrom(RECEIPTS).where(RECEIPTS.ID.in(dsl.select(TAGS.ID).from(TAGS).where(TAGS.TAG.eq(tag)).fetch())).fetch();
     }
 }
